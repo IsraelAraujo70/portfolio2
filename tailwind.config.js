@@ -70,6 +70,12 @@ module.exports = {
         'lg': '12px',
         'xl': '16px'
       },
+      backgroundImage: {
+        'gradient-cyan': 'linear-gradient(135deg, #38d9a9, #4fc3f7)',
+        'gradient-magenta': 'linear-gradient(135deg, #ff6b9d, #f06292)',
+        'gradient-pink': 'linear-gradient(135deg, #f06292, #ff6b9d)',
+        'gradient-multi': 'linear-gradient(135deg, #38d9a9, #4fc3f7, #ff6b9d)'
+      },
       transitionDuration: {
         'fast': '150ms',
         'normal': '300ms',
