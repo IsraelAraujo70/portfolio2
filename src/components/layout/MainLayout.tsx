@@ -5,6 +5,8 @@ import Sidebar from './Sidebar'
 import MobileNavigation from './MobileNavigation'
 import MobileHeader from './MobileHeader'
 import FloatingChat from './FloatingChat'
+import CustomFullPageScroll from '@/components/CustomFullPageScroll'
+import { useDevice } from '@/hooks/useDevice'
 
 interface MainLayoutProps {
   children: React.ReactNode
@@ -12,18 +14,7 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   const [currentLang, setCurrentLang] = useState('pt')
-  const [isMobile, setIsMobile] = useState(false)
-
-  // Device detection
-  useEffect(() => {
-    const checkDevice = () => {
-      setIsMobile(window.innerWidth < 1024)
-    }
-
-    checkDevice()
-    window.addEventListener('resize', checkDevice)
-    return () => window.removeEventListener('resize', checkDevice)
-  }, [])
+  const { isMobile, isDesktop } = useDevice()
 
   // Language management
   const handleLanguageChange = (lang: string) => {
@@ -50,14 +41,14 @@ export default function MainLayout({ children }: MainLayoutProps) {
       <main 
         className={`
           transition-all duration-300
-          lg:ml-16 
+          ${isDesktop ? 'ml-16' : ''}
           ${isMobile ? 'pt-16 pb-20' : 'pt-0 pb-0'}
-          min-h-screen
+          ${isDesktop ? 'h-screen overflow-hidden' : 'min-h-screen'}
         `}
       >
-        <div className="container mx-auto px-4 py-6 lg:py-8">
+        <CustomFullPageScroll>
           {children}
-        </div>
+        </CustomFullPageScroll>
       </main>
 
       {/* Mobile Bottom Navigation */}
