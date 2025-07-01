@@ -1,0 +1,60 @@
+{
+  "name": "portfolio-bilingual",
+  "version": "1.0.0",
+  "description": "Portfólio profissional bilíngue com chat IA",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:studio": "prisma studio",
+    "prisma:reset": "prisma migrate reset"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IsraelAraujo70/portfolio2.git"
+  },
+  "keywords": [
+    "portfolio",
+    "nextjs",
+    "typescript",
+    "bilingual",
+    "ai-chat"
+  ],
+  "author": "Israel Araujo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/IsraelAraujo70/portfolio2/issues"
+  },
+  "homepage": "https://github.com/IsraelAraujo70/portfolio2#readme",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@tailwindcss/postcss": "^4.1.11",
+    "@types/node": "^22.10.5",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "^15.1.5",
+    "framer-motion": "^11.15.0",
+    "lucide-react": "^0.468.0",
+    "next": "^14.2.22",
+    "next-i18next": "^15.3.1",
+    "openai": "^4.76.1",
+    "postcss": "^8.5.4",
+    "prisma": "^5.22.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

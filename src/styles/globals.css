@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    @apply bg-primary-dark text-text-primary font-sans;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-primary-background;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-accent-cyan rounded-lg;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent-blue;
+  }
+}
+
+@layer components {
+  .gradient-text {
+    @apply bg-gradient-to-r from-accent-cyan to-accent-blue bg-clip-text text-transparent;
+  }
+
+  .gradient-border {
+    position: relative;
+    background: linear-gradient(135deg, #38d9a9, #4fc3f7);
+    padding: 2px;
+    border-radius: 1rem;
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background: #4a5568;
+    border-radius: calc(1rem - 2px);
+    z-index: -1;
+  }
+
+  .card {
+    @apply bg-primary-surface/80 backdrop-blur-sm border-2 border-transparent rounded-lg p-lg shadow-card transition-all duration-normal;
+  }
+
+  .card:hover {
+    @apply shadow-hover scale-105;
+  }
+
+  .btn-primary {
+    @apply bg-gradient-to-r from-accent-cyan to-accent-blue text-white font-semibold py-md px-lg rounded-md transition-all duration-normal hover:scale-105 hover:shadow-hover;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent border border-accent-cyan/30 text-accent-cyan font-semibold py-md px-lg rounded-md transition-all duration-normal hover:bg-accent-cyan/10 hover:border-accent-cyan;
+  }
+
+  .sidebar-nav {
+    @apply w-16 bg-primary-dark/90 backdrop-blur-md fixed h-screen left-0 top-0 z-50 flex flex-col items-center py-4;
+  }
+
+  .nav-icon {
+    @apply w-6 h-6 text-text-secondary hover:text-accent-cyan transition-colors duration-fast cursor-pointer;
+  }
+
+  .nav-icon.active {
+    @apply text-accent-cyan;
+  }
+
+  .section-padding {
+    @apply py-2xl px-lg;
+  }
+
+  .container-custom {
+    @apply max-w-6xl mx-auto;
+  }
+
+  .loading-spinner {
+    @apply w-16 h-16 text-accent-cyan animate-pulse;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 600ms;
+  }
+}

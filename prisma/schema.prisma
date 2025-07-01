@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  image       String?
+  demoUrl     String?
+  githubUrl   String?
+  technologies String[]
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("projects")
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  content   String
+  role      String   // 'user' or 'assistant'
+  sessionId String
+  createdAt DateTime @default(now())
+
+  @@map("chat_messages")
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
+}
+
+model Skill {
+  id       String @id @default(cuid())
+  name     String
+  category String // 'frontend', 'backend', 'tools', etc.
+  level    Int    // 1-5 scale
+  icon     String?
+
+  @@map("skills")
+}
+
+model Experience {
+  id          String    @id @default(cuid())
+  company     String
+  position    String
+  description String
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  location    String?
+
+  @@map("experiences")
+}
