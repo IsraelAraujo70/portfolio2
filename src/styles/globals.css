@@ -41,7 +41,7 @@
 
 @layer components {
   .gradient-text {
-    @apply bg-gradient-to-r from-accent-cyan to-accent-blue bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent;
   }
 
   .gradient-border {
@@ -133,7 +133,7 @@
   }
 
   .btn-primary {
-    @apply bg-gradient-to-r from-accent-cyan to-accent-blue text-white font-semibold py-md px-lg rounded-md transition-all duration-normal hover:scale-105 hover:shadow-hover;
+    @apply bg-gradient-to-r from-cyan-400 to-blue-500 text-white font-semibold py-4 px-6 rounded-md transition-all duration-300 hover:scale-105 hover:shadow-lg;
   }
 
   .btn-ghost {
