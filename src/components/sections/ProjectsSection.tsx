@@ -1,52 +1,51 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
-import { ExternalLink, Github, Folder, ArrowRight } from 'lucide-react'
-
-const projects = [
-  {
-    id: 1,
-    title: "E-commerce Platform",
-    description: "Plataforma completa de e-commerce com React, Node.js e PostgreSQL",
-    image: "/api/placeholder/400/250",
-    tags: ["React", "Node.js", "PostgreSQL", "Stripe"],
-    liveUrl: "#",
-    githubUrl: "#"
-  },
-  {
-    id: 2,
-    title: "Task Management App",
-    description: "Aplicativo de gerenciamento de tarefas com funcionalidades avançadas",
-    image: "/api/placeholder/400/250",
-    tags: ["Next.js", "TypeScript", "Prisma", "TailwindCSS"],
-    liveUrl: "#",
-    githubUrl: "#"
-  },
-  {
-    id: 3,
-    title: "Weather Dashboard",
-    description: "Dashboard meteorológico com gráficos interativos e previsões",
-    image: "/api/placeholder/400/250",
-    tags: ["Vue.js", "Chart.js", "API Integration"],
-    liveUrl: "#",
-    githubUrl: "#"
-  },
-  {
-    id: 4,
-    title: "Social Media App",
-    description: "Aplicativo de rede social com real-time updates e chat",
-    image: "/api/placeholder/400/250",
-    tags: ["React Native", "Socket.io", "MongoDB"],
-    liveUrl: "#",
-    githubUrl: "#"
-  }
-]
+import { Folder, ArrowRight } from 'lucide-react'
+import { projects, getAllTechnologies } from '@/data/projects'
+import { Project, ProjectCategory, BORDER_COLORS } from '@/types/project'
+import { ProjectCard, ProjectModal, ProjectFilters } from '@/components/ui'
 
 export default function ProjectsSection() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [selectedTechnology, setSelectedTechnology] = useState<string | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<ProjectCategory | null>(null)
+  
+  const allTechnologies = getAllTechnologies()
+
+  // Filter projects based on selected filters
+  const filteredProjects = useMemo(() => {
+    return projects.filter(project => {
+      if (selectedTechnology && !project.technologies.some(tech => 
+        tech.toLowerCase().includes(selectedTechnology.toLowerCase())
+      )) {
+        return false
+      }
+      
+      if (selectedCategory && project.category !== selectedCategory) {
+        return false
+      }
+      
+      return true
+    })
+  }, [selectedTechnology, selectedCategory])
+
+  // Show only featured projects initially, or first 6 if no featured
+  const displayProjects = filteredProjects.length > 0 ? filteredProjects.slice(0, 6) : projects.slice(0, 6)
+
+  const handleCardClick = (project: Project) => {
+    setSelectedProject(project)
+  }
+
+  const closeModal = () => {
+    setSelectedProject(null)
+  }
+
   return (
     <section className="min-h-screen flex items-center justify-center px-4 py-20">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
         <motion.div 
           className="text-center mb-16"
           initial={{ opacity: 0, y: 30 }}
@@ -55,112 +54,81 @@ export default function ProjectsSection() {
           viewport={{ once: true }}
         >
           <motion.div
-            className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full mb-6"
+            className="inline-flex items-center justify-center w-16 h-16 bg-cyan-500/10 
+                       border border-cyan-500/20 rounded-full mb-6"
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <Folder size={32} className="text-blue-600 dark:text-blue-400" />
+            <Folder size={32} className="text-cyan-400" />
           </motion.div>
           
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-4">
             Meus Projetos
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
             Uma seleção dos meus trabalhos mais recentes e projetos que demonstram 
-            minhas habilidades em desenvolvimento web moderno.
+            minhas habilidades em desenvolvimento moderno.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.id}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden group"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            >
-              {/* Project Image */}
-              <div className="relative h-48 bg-gradient-to-br from-blue-400 to-purple-500 overflow-hidden">
-                <motion.div
-                  className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
-                  whileHover={{ opacity: 1 }}
-                >
-                  <div className="flex space-x-4">
-                    <motion.a
-                      href={project.liveUrl}
-                      className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <ExternalLink size={20} className="text-white" />
-                    </motion.a>
-                    <motion.a
-                      href={project.githubUrl}
-                      className="p-3 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <Github size={20} className="text-white" />
-                    </motion.a>
-                  </div>
-                </motion.div>
-              </div>
+        {/* Filters */}
+        <ProjectFilters
+          technologies={allTechnologies}
+          selectedTechnology={selectedTechnology}
+          selectedCategory={selectedCategory}
+          onTechnologyChange={setSelectedTechnology}
+          onCategoryChange={setSelectedCategory}
+        />
 
-              {/* Project Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
-                  {project.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
-                  {project.description}
-                </p>
-                
-                {/* Tags */}
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag, tagIndex) => (
-                    <motion.span
-                      key={tag}
-                      className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-sm rounded-full"
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: tagIndex * 0.1 }}
-                      viewport={{ once: true }}
-                    >
-                      {tag}
-                    </motion.span>
-                  ))}
-                </div>
-
-                {/* Project Links */}
-                <div className="flex space-x-4">
-                  <motion.a
-                    href={project.liveUrl}
-                    className="flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors font-medium"
-                    whileHover={{ x: 5 }}
-                  >
-                    Ver Projeto
-                    <ExternalLink size={16} className="ml-1" />
-                  </motion.a>
-                  <motion.a
-                    href={project.githubUrl}
-                    className="flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors font-medium"
-                    whileHover={{ x: 5 }}
-                  >
-                    Código
-                    <Github size={16} className="ml-1" />
-                  </motion.a>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        {/* Projects Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {displayProjects.map((project, index) => {
+            const borderColor = BORDER_COLORS[index % BORDER_COLORS.length]
+            return (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                borderColor={borderColor}
+                index={index}
+                onCardClick={handleCardClick}
+              />
+            )
+          })}
         </div>
 
-        {/* CTA */}
+        {/* No Results Message */}
+        {filteredProjects.length === 0 && (selectedTechnology || selectedCategory) && (
+          <motion.div
+            className="text-center py-12"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="text-gray-400 mb-4">
+              <Folder size={48} className="mx-auto mb-4 opacity-50" />
+              <p className="text-lg">Nenhum projeto encontrado com os filtros selecionados.</p>
+              <p className="text-sm">Tente remover alguns filtros ou explorar outras categorias.</p>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Results Counter */}
+        {(selectedTechnology || selectedCategory) && filteredProjects.length > 0 && (
+          <motion.div
+            className="text-center mb-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className="text-gray-400">
+              Mostrando {Math.min(6, filteredProjects.length)} de {filteredProjects.length} projeto(s) encontrado(s)
+            </p>
+          </motion.div>
+        )}
+
+        {/* CTA Button */}
         <motion.div 
           className="text-center"
           initial={{ opacity: 0 }}
@@ -168,16 +136,28 @@ export default function ProjectsSection() {
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          <motion.a
-            href="/projects"
-            className="inline-flex items-center px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg"
+          <motion.button
+            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-500 
+                     text-white rounded-lg hover:from-cyan-600 hover:to-blue-600 transition-all 
+                     duration-200 font-semibold text-lg shadow-lg hover:shadow-cyan-500/25"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              // Could navigate to a dedicated projects page
+              console.log('Navigate to full projects page')
+            }}
           >
             Ver Todos os Projetos
             <ArrowRight size={20} className="ml-2" />
-          </motion.a>
+          </motion.button>
         </motion.div>
+
+        {/* Project Modal */}
+        <ProjectModal
+          project={selectedProject}
+          isOpen={!!selectedProject}
+          onClose={closeModal}
+        />
       </div>
     </section>
   )
